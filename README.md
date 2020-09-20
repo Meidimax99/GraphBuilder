@@ -14,4 +14,4 @@ This project will be part of an Interactive Graph Solver, which aims to show how
 
 # Running the Project
 
-The simplest way to run this is to simply open the index.html with a liveserver.
+You will either need to download a copy of the p5.js library and include it in the index.html or you can include a hosted version of the library. You can learn more about downloading the p5.js Library at https://p5js.org/get-started/#download. After that you should be able to run it using a live server.
