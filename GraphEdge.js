@@ -4,6 +4,7 @@ class GraphEdge {
         this.sourceNode = sourceNode;
         this.targetNode = targetNode;
         this.cost = cost;
+        this.active = false;
 
     }
 
@@ -30,7 +31,7 @@ class GraphEdge {
     }
 
     draw() {
-        if (this.contains(mouseX, mouseY)) {
+        if (this.contains(mouseX, mouseY) || this.active) {
             strokeWeight(8);
             stroke(fillColor.activated);
             line(
@@ -73,7 +74,7 @@ class GraphEdge {
             this.targetNode.X,
             this.targetNode.Y
         );
-        text(cost, costVect.X, costVect.Y - 6);
+        text(this.cost, costVect.X, costVect.Y - 6);
     }
 
 

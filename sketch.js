@@ -8,6 +8,8 @@ const accessMode = {
   addNode: 2,
   addEdge1: 3,
   addEdge2: 4,
+  editEdge: 5,
+  editEdge2: 6
 };
 
 //Initial accessMode
@@ -124,6 +126,8 @@ function nextID() {
 var sourceNode = new GraphNode(-50, -50, "A");
 var targetNode = new GraphNode(-50, -50, "A");
 
+var selectedEdge;
+
 var cost = 1;
 
 function mouseClicked() {
@@ -144,9 +148,30 @@ function mouseClicked() {
   } else if (mode == accessMode.addEdge2) {
     targetNode = findNode();
     if (targetNode && targetNode != sourceNode) {
-      edgeArray.push(new GraphEdge(sourceNode, targetNode));
+      edgeArray.push(new GraphEdge(sourceNode, targetNode, 1));
     }
     mode = accessMode.view;
+  } else if (mode == accessMode.view) {
+    if (selectedEdge = findEdge()) {
+      selectedEdge.active = true;
+      mode = accessMode.editEdge;
+    }
+  } else if (mode == accessMode.editEdge) {
+    selectedEdge.active = false;
+    if (selectedEdge = findEdge()) {
+      selectedEdge.active = true;
+      mode = accessMode.editEdge;
+    } else {
+      mode = accessMode.view;
+    }
+  } else if (mode == accessMode.editEdge2) {
+    selectedEdge.active = false;
+    if (selectedEdge = findEdge()) {
+      selectedEdge.active = true;
+      mode = accessMode.editEdge2;
+    } else {
+      mode = accessMode.view;
+    }
   }
 }
 
@@ -160,17 +185,38 @@ function findNode() {
   return null;
 }
 
+function findEdge() {
+  for (var i = 0; i < edgeArray.length; i++) {
+    if (edgeArray[i].contains(mouseX, mouseY)) {
+      return edgeArray[i];
+    }
+  }
+  return null;
+}
+
 //gets called when there is a button pressed
-function keyTyped() {
+//TODO Keypressed function should be strucktured after the modes, not the keys
+function keyPressed() {
   if (key == "a") {
     mode = accessMode.addNode;
     newNode = new GraphNode(mouseX, mouseY, nextID());
   } else if (key == "e") {
     mode = accessMode.addEdge1;
-  } else if (key == "p") {
-    //DEBUGCOMMAND
-    for (let i = 0; i < nodeArray.length; i++) {
-      console.log(nodeArray[i]);
+  } else if (mode == accessMode.editEdge) {
+    if (keyCode == DELETE) {
+      let index = edgeArray.indexOf(selectedEdge);
+      if (index !== -1) {
+        edgeArray.splice(index, 1);
+      }
+      mode = accessMode.view;
+    } else if (!isNaN(key)) {
+      selectedEdge.cost = key;
+      mode = accessMode.editEdge2;
+    }
+
+  } else if (mode == accessMode.editEdge2) {
+    if (!isNaN(key)) {
+      selectedEdge.cost = selectedEdge.cost + key;
     }
   }
 }
