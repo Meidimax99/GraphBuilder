@@ -5,6 +5,8 @@ var strokeColor;
 class GraphNode {
   //Instancefields
   adjacentNodes = [];
+  cost = -1;
+
 
   constructor(X, Y, id) {
     this.X = X;
@@ -16,7 +18,7 @@ class GraphNode {
 
   //Is a given Point inside the Circle?
   //better Name would be contains -> Refactor
-  isIn(posX, posY) {
+  contains(posX, posY) {
     if (
       Math.sqrt(Math.pow(posX - this.X, 2) + Math.pow(posY - this.Y, 2)) <=
       r / 2
@@ -65,13 +67,15 @@ class GraphNode {
 
     noStroke();
 
+    this.drawcost();
+    textSize(fontsize);
     if (this.closeToAny()) {
       fill(fillColor.warning);
       ellipse(this.X, this.Y, r);
 
       fill(textColor.warning);
       text(this.id, this.X, this.Y - 6);
-    } else if (this.isIn(mouseX, mouseY)) {
+    } else if (this.contains(mouseX, mouseY)) {
       fill(fillColor.activated);
       ellipse(this.X, this.Y, r);
 
@@ -87,5 +91,19 @@ class GraphNode {
 
     //Needs extra coloring modes for being marked when going through the algorithm, to mark them as already
     //checked -> Maybe do that with the Strokes
+  }
+
+  drawcost() {
+    textSize(20);
+    fill(0);
+    let costText;
+
+    if (this.cost == -1) {
+      costText = '∞';
+    } else {
+      costText = this.cost;
+    }
+
+    text(costText, this.X + r / 2, this.Y - r / 2);
   }
 }

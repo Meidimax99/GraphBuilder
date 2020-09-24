@@ -153,7 +153,7 @@ function mouseClicked() {
 //get the Node that has been clicked on
 function findNode() {
   for (var i = 0; i < nodeArray.length; i++) {
-    if (nodeArray[i].isIn(mouseX, mouseY)) {
+    if (nodeArray[i].contains(mouseX, mouseY)) {
       return nodeArray[i];
     }
   }
