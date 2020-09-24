@@ -17,9 +17,31 @@ class GraphEdge {
     static drawArrow(AX, AY, BX, BY) {
 
     }
+    //Check if given coordinates are on the Number of the edge
+    //Take the centerpoint of the Edge and check if the given coordinates are within a set radius around that point
+    contains(X, Y) {
+        let middle = GraphEdge.middleOfLine(this.sourceNode.X, this.sourceNode.Y, this.targetNode.X, this.targetNode.Y);
+        let radius = 16;
+
+        if (Math.sqrt(Math.pow(X - middle.X, 2) + Math.pow(Y - middle.Y, 2)) <= radius) {
+            return true;
+        }
+        return false;
+    }
 
     draw() {
+        if (this.contains(mouseX, mouseY)) {
+            strokeWeight(8);
+            stroke(fillColor.activated);
+            line(
+                this.sourceNode.X,
+                this.sourceNode.Y,
+                this.targetNode.X,
+                this.targetNode.Y
+            );
+        }
         stroke(0);
+        strokeWeight(1);
         line(
             this.sourceNode.X,
             this.sourceNode.Y,

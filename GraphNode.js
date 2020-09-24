@@ -14,10 +14,8 @@ class GraphNode {
     this.id = id;
   }
 
-  //Schnittberechnung
 
   //Is a given Point inside the Circle?
-  //better Name would be contains -> Refactor
   contains(posX, posY) {
     if (
       Math.sqrt(Math.pow(posX - this.X, 2) + Math.pow(posY - this.Y, 2)) <=
@@ -29,9 +27,7 @@ class GraphNode {
   }
   //Check if a Node with given Centercoordinates and same global width intersects with this node
   intersects(posX, posY) {
-    if (
-      Math.sqrt(Math.pow(posX - this.X, 2) + Math.pow(posY - this.Y, 2)) <= r
-    ) {
+    if (Math.sqrt(Math.pow(posX - this.X, 2) + Math.pow(posY - this.Y, 2)) <= r) {
       return true;
     }
     return false;
