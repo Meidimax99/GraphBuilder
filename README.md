@@ -6,11 +6,11 @@ This project will be part of an Interactive Graph Solver, which aims to show how
 
 - Create new Nodes pressing 'a' and then clicking anywhere on the canvas
 - Create Edges Between existing nodes by pressing the 'e' Key and then selecting 2 Nodes
+- Change the cost of Edges by clicking on their cost and giving in a new number
 
 # Planned Functionality
-
-- Give Edges a Cost
-- More stuff that comes up in the process of coding this
+- Edges should easily be access from other programs, for example Angular components
+- stuff that comes up in the process of coding this
 
 # Running the Project
 
