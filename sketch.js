@@ -79,11 +79,7 @@ function draw() {
   if (mode == accessMode.addEdge2) {}
 }
 
-//Counter that keeps track of the next number to convert to a char
-var charCounter = {
-  it: 1,
-  count: 65,
-};
+
 
 function drawArrow(AX, AY, BX, BY) {
   stroke(0);
@@ -107,6 +103,12 @@ function drawArrow(AX, AY, BX, BY) {
   //reset transformations
   resetMatrix();
 }
+
+//Counter that keeps track of the next number to convert to a char
+var charCounter = {
+  it: 1,
+  count: 65,
+};
 
 //returns next ID für new Node
 //TODO Currently iterates through A-Z and will start over again, needs solution to iterate
@@ -195,7 +197,7 @@ function findEdge() {
 }
 
 //gets called when there is a button pressed
-//TODO Keypressed function should be strucktured after the modes, not the keys
+//TODO Keypressed function should be structured after the modes, not the keys
 function keyPressed() {
   if (key == "a") {
     mode = accessMode.addNode;
@@ -225,15 +227,23 @@ function keyPressed() {
 //Edges first, because the Edges start as lines from the Center of the Nodes and
 //need to get covered by the Nodes
 function drawNodes() {
-  for (var i = 0; i < nodeArray.length; i++) {
-    nodeArray[i].draw();
-  }
+  nodeArray.forEach(node => node.draw());
+}
+
+function findParallelEdge(inputedge) {
+  return edgeArray.filter((edge, index, edgeArray) => {
+    return edge.sourceNode == inputedge.targetNode && edge.targetNode == inputedge.sourceNode;
+  })
 }
 
 function drawEdges() {
-  for (var i = 0; i < edgeArray.length; i++) {
-    edgeArray[i].draw();
-  }
+  edgeArray.forEach(edge => {
+    if (findParallelEdge(edge).length == 1) {
+      edge.draw(true);
+    } else {
+      edge.draw(false);
+    }
+  });
 }
 
 //TODO Refactor for loops to foreach
