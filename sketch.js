@@ -9,7 +9,7 @@ const accessMode = {
   addEdge1: 3,
   addEdge2: 4,
   editEdge: 5,
-  editEdge2: 6
+  editEdge2: 6,
 };
 
 //Initial accessMode
@@ -67,34 +67,27 @@ function draw() {
   drawEdges();
   drawNodes();
 
-  if (mode == accessMode.view) {} else if (mode == accessMode.addNode) {
+  if (mode == accessMode.view) {
+  } else if (mode == accessMode.addNode) {
     newNode.X = mouseX;
     newNode.Y = mouseY;
     newNode.draw(sourceNode.X, sourceNode.Y, mouseX, mouseY);
-  } else {}
+  } else {
+  }
 
   //Draw overlapping arrowhead
   //Should start from under a sourcenode and go over a possible targetnode
   //Or: Change alle Edges so that they start at the Border of the Node and not the Center
-  if (mode == accessMode.addEdge2) {}
+  if (mode == accessMode.addEdge2) {
+  }
 }
-
-
 
 function drawArrow(AX, AY, BX, BY) {
   stroke(0);
-  line(
-    AX,
-    AY,
-    BX,
-    BY
-  );
+  line(AX, AY, BX, BY);
   //Arrowhead
   //Calculate Vector between the vectors in functionparameterlist
-  let angle = GraphEdge.calculateAngle(
-    AX - BX,
-    AY - BY
-  );
+  let angle = GraphEdge.calculateAngle(AX - BX, AY - BY);
   translate(BX, BY);
   rotate(angle);
   fill(0);
@@ -149,18 +142,25 @@ function mouseClicked() {
     }
   } else if (mode == accessMode.addEdge2) {
     targetNode = findNode();
+
     if (targetNode && targetNode != sourceNode) {
-      edgeArray.push(new GraphEdge(sourceNode, targetNode, 1));
+      //Testing for duplicate edge
+      let duplicateEdge = edgeArray.filter((edge, index, edgeArray) => {
+        return edge.sourceNode == sourceNode && edge.targetNode == targetNode;
+      });
+      if (duplicateEdge.length < 1) {
+        edgeArray.push(new GraphEdge(sourceNode, targetNode, 1));
+      }
     }
     mode = accessMode.view;
   } else if (mode == accessMode.view) {
-    if (selectedEdge = findEdge()) {
+    if ((selectedEdge = findEdge())) {
       selectedEdge.active = true;
       mode = accessMode.editEdge;
     }
   } else if (mode == accessMode.editEdge) {
     selectedEdge.active = false;
-    if (selectedEdge = findEdge()) {
+    if ((selectedEdge = findEdge())) {
       selectedEdge.active = true;
       mode = accessMode.editEdge;
     } else {
@@ -168,7 +168,7 @@ function mouseClicked() {
     }
   } else if (mode == accessMode.editEdge2) {
     selectedEdge.active = false;
-    if (selectedEdge = findEdge()) {
+    if ((selectedEdge = findEdge())) {
       selectedEdge.active = true;
       mode = accessMode.editEdge2;
     } else {
@@ -215,7 +215,6 @@ function keyPressed() {
       selectedEdge.cost = key;
       mode = accessMode.editEdge2;
     }
-
   } else if (mode == accessMode.editEdge2) {
     if (!isNaN(key)) {
       selectedEdge.cost = selectedEdge.cost + key;
@@ -227,17 +226,20 @@ function keyPressed() {
 //Edges first, because the Edges start as lines from the Center of the Nodes and
 //need to get covered by the Nodes
 function drawNodes() {
-  nodeArray.forEach(node => node.draw());
+  nodeArray.forEach((node) => node.draw());
 }
 
 function findParallelEdge(inputedge) {
   return edgeArray.filter((edge, index, edgeArray) => {
-    return edge.sourceNode == inputedge.targetNode && edge.targetNode == inputedge.sourceNode;
-  })
+    return (
+      edge.sourceNode == inputedge.targetNode &&
+      edge.targetNode == inputedge.sourceNode
+    );
+  });
 }
 
 function drawEdges() {
-  edgeArray.forEach(edge => {
+  edgeArray.forEach((edge) => {
     if (findParallelEdge(edge).length == 1) {
       edge.draw(true);
     } else {
