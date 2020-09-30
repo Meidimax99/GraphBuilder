@@ -129,9 +129,14 @@ function changeOperationMode(newMode) {
       };
       mouseClicked = function () {
         selectedEdge.active = false;
-        if ((selectedEdge = findEdge())) {
+        let newSelEdge = findEdge();
+        if (newSelEdge && newSelEdge == selectedEdge) {
           selectedEdge.active = true;
           changeOperationMode(accessMode.editEdge2);
+        } else if (newSelEdge) {
+          selectedEdge = newSelEdge;
+          selectedEdge.active = true;
+          changeOperationMode(accessMode.editEdge);
         } else {
           changeOperationMode(accessMode.view);
         }
