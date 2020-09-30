@@ -34,7 +34,12 @@ class GraphEdge {
     }
     return false;
   }
-  drawNormal() {
+  drawNormal() {}
+  static vectorLength(X, Y) {
+    return Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2));
+  }
+
+  draw(doubled) {
     if (this.contains(mouseX, mouseY) || this.active) {
       strokeWeight(8);
       stroke(fillColor.activated);
@@ -78,76 +83,13 @@ class GraphEdge {
       this.targetNode.X,
       this.targetNode.Y
     );
-    text(this.cost, this.middle.X, this.middle.Y - 6);
-  }
-  static vectorLength(X, Y) {
-    return Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2));
-  }
-  drawdoubled() {
-    stroke(0);
-    let vector = {
-      X: this.sourceNode.X - this.targetNode.X,
-      Y: this.sourceNode.Y - this.targetNode.Y,
-    };
-
-    let normale = {
-      X: -vector.Y,
-      Y: vector.X,
-    };
-
-    normale.X = normale.X / GraphEdge.vectorLength(normale.X, normale.Y);
-    normale.Y = normale.Y / GraphEdge.vectorLength(normale.X, normale.Y);
-
-    let fac = 15;
-
-    let p1 = {
-      X: this.sourceNode.X + fac * normale.X,
-      Y: this.sourceNode.Y + fac * normale.Y,
-    };
-
-    let p2 = {
-      X: this.targetNode.X + fac * normale.X,
-      Y: this.targetNode.Y + fac * normale.Y,
-    };
-
-    line(p1.X, p1.Y, p2.X, p2.Y);
-    /*line(
-      this.sourceNode.X,
-      this.sourceNode.Y,
-      this.targetNode.X,
-      this.targetNode.Y
-    );*/
-
-    let distance = GraphEdge.vectorLength(vector.X, vector.Y);
-    let angle = GraphEdge.calculateAngle(vector.X, vector.Y);
-
-    //Arrowhead
-    translate(
-      this.targetNode.X + fac * normale.X,
-      this.targetNode.Y + fac * normale.Y
-    );
-    rotate(angle);
-    translate(r / 2 - 5, 0);
-    fill(0);
-    triangle(0, 0, 10, 4, 10, -4);
-
-    //reset transformations
-    resetMatrix();
-
-    //Draw Edge Cost
-    noStroke();
-    fill(0);
-
-    text(this.cost, this.middle.X, this.middle.Y - 6);
-  }
-
-  draw(doubled) {
-    this.doubled = doubled;
     if (doubled) {
-      this.drawdoubled();
-    } else {
-      this.drawNormal();
+      this.middle = {
+        X: (this.middle.X - this.sourceNode.X) * 1.3 + this.sourceNode.X,
+        Y: (this.middle.Y - this.sourceNode.Y) * 1.3 + this.sourceNode.Y,
+      };
     }
+    text(this.cost, this.middle.X, this.middle.Y - 6);
   }
 
   setCost(cost) {

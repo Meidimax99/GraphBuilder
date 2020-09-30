@@ -187,10 +187,12 @@ function setup() {
   };
 
   //TestNodes
+  /*
   nodeArray.push(new GraphNode(100, 100, "A"));
   nodeArray.push(new GraphNode(300, 100, "B"));
   edgeArray.push(new GraphEdge(nodeArray[0], nodeArray[1], 1));
   edgeArray.push(new GraphEdge(nodeArray[1], nodeArray[0], 2));
+  */
 }
 //Variable vor new Nodes, must be a new Node to guarantee the Type of the Variable newNode
 var newNode = new GraphNode(-50, -50, "A");
