@@ -261,21 +261,15 @@ function mouseClicked() {
 
 //get the Node that has been clicked on
 function findNode() {
-  for (var i = 0; i < nodeArray.length; i++) {
-    if (nodeArray[i].contains(mouseX, mouseY)) {
-      return nodeArray[i];
-    }
-  }
-  return null;
+  return nodeArray.filter((node, index, edgeArray) => {
+    return (node.contains(mouseX, mouseY));
+  })[0];
 }
 
 function findEdge() {
-  for (var i = 0; i < edgeArray.length; i++) {
-    if (edgeArray[i].contains(mouseX, mouseY)) {
-      return edgeArray[i];
-    }
-  }
-  return null;
+  return edgeArray.filter((edge, index, edgeArray) => {
+    return (edge.contains(mouseX, mouseY));
+  })[0];
 }
 
 //gets called when there is a button pressed
@@ -314,5 +308,3 @@ function drawEdges() {
     }
   });
 }
-
-//TODO Refactor for loops to foreach
