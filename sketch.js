@@ -44,7 +44,7 @@ function changeOperationMode(newMode) {
         drawScene();
         newNode.X = mouseX;
         newNode.Y = mouseY;
-        newNode.draw(sourceNode.X, sourceNode.Y, mouseX, mouseY);
+        newNode.draw();
       };
       mouseClicked = function () {
         if (!newNode.closeToAny()) {
