@@ -166,6 +166,7 @@ function setup() {
   textAlign(CENTER, CENTER);
 
   //Assign GraphVars
+
   textColor = {
     activated: color(0, 0, 0),
     idle: color(255, 255, 255),
@@ -184,6 +185,12 @@ function setup() {
     idle: color(0, 0, 0),
     warning: color(0, 0, 0),
   };
+
+  //TestNodes
+  nodeArray.push(new GraphNode(100, 100, "A"));
+  nodeArray.push(new GraphNode(300, 100, "B"));
+  edgeArray.push(new GraphEdge(nodeArray[0], nodeArray[1], 1));
+  edgeArray.push(new GraphEdge(nodeArray[1], nodeArray[0], 2));
 }
 //Variable vor new Nodes, must be a new Node to guarantee the Type of the Variable newNode
 var newNode = new GraphNode(-50, -50, "A");
@@ -195,8 +202,7 @@ function drawScene() {
 
 function draw() {
   background(255);
-  drawEdges();
-  drawNodes();
+  drawScene();
 
   //Draw overlapping arrowhead
   //Should start from under a sourcenode and go over a possible targetnode
