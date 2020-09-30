@@ -3,6 +3,7 @@ var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
 //Different accessmodes
+//TODO Node for selecting Nodes similar to
 const accessMode = {
   view: 1,
   addNode: 2,
@@ -14,6 +15,136 @@ const accessMode = {
 
 //Initial accessMode
 var mode = accessMode.view;
+
+function changeOperationMode(newMode) {
+  switch (newMode) {
+    case accessMode.view:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        if ((selectedEdge = findEdge())) {
+          selectedEdge.active = true;
+          changeOperationMode(accessMode.editEdge);
+        }
+      };
+      keyPressed = function () {
+        if (key == "a") {
+          changeOperationMode(accessMode.addNode);
+          newNode = new GraphNode(mouseX, mouseY, nextID());
+        } else if (key == "e") {
+          changeOperationMode(accessMode.addEdge1);
+        }
+      };
+      break;
+    case accessMode.addNode:
+      draw = function () {
+        background(255);
+        drawScene();
+        newNode.X = mouseX;
+        newNode.Y = mouseY;
+        newNode.draw(sourceNode.X, sourceNode.Y, mouseX, mouseY);
+      };
+      mouseClicked = function () {
+        if (!newNode.closeToAny()) {
+          nodeArray.push(newNode);
+          changeOperationMode(accessMode.view);
+        } else {
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyPressed = function () {};
+      break;
+    case accessMode.addEdge1:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        sourceNode = findNode();
+        if (sourceNode) {
+          changeOperationMode(accessMode.addEdge2);
+        } else {
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyPressed = function () {};
+      break;
+    case accessMode.addEdge2:
+      draw = function () {
+        background(255);
+        drawArrow(sourceNode.X, sourceNode.Y, mouseX, mouseY);
+        drawScene();
+      };
+      mouseClicked = function () {
+        targetNode = findNode();
+
+        if (targetNode && targetNode != sourceNode) {
+          //Testing for duplicate edge
+          let duplicateEdge = edgeArray.filter((edge, index, edgeArray) => {
+            return (
+              edge.sourceNode == sourceNode && edge.targetNode == targetNode
+            );
+          });
+          if (duplicateEdge.length < 1) {
+            edgeArray.push(new GraphEdge(sourceNode, targetNode, 1));
+          }
+        }
+        changeOperationMode(accessMode.view);
+      };
+      keyPressed = function () {};
+      break;
+    case accessMode.editEdge:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        selectedEdge.active = false;
+        if ((selectedEdge = findEdge())) {
+          selectedEdge.active = true;
+          changeOperationMode(accessMode.editEdge);
+        } else {
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyPressed = function () {
+        if (keyCode == DELETE) {
+          let index = edgeArray.indexOf(selectedEdge);
+          if (index !== -1) {
+            edgeArray.splice(index, 1);
+          }
+          changeOperationMode(accessMode.view);
+        } else if (!isNaN(key)) {
+          selectedEdge.cost = key;
+          changeOperationMode(accessMode.editEdge2);
+        }
+      };
+      break;
+    case accessMode.editEdge2:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        selectedEdge.active = false;
+        if ((selectedEdge = findEdge())) {
+          selectedEdge.active = true;
+          changeOperationMode(accessMode.editEdge2);
+        } else {
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyPressed = function () {
+        if (!isNaN(key)) {
+          selectedEdge.cost = selectedEdge.cost + key;
+        }
+      };
+      break;
+  }
+  mode = newMode;
+}
 
 //array of Nodes Placed in the Canvas
 var nodeArray = [];
@@ -57,29 +188,19 @@ function setup() {
 //Variable vor new Nodes, must be a new Node to guarantee the Type of the Variable newNode
 var newNode = new GraphNode(-50, -50, "A");
 
-function draw() {
-  background(255);
-
-  if (mode == accessMode.addEdge2) {
-    drawArrow(sourceNode.X, sourceNode.Y, mouseX, mouseY);
-  }
-
+function drawScene() {
   drawEdges();
   drawNodes();
+}
 
-  if (mode == accessMode.view) {
-  } else if (mode == accessMode.addNode) {
-    newNode.X = mouseX;
-    newNode.Y = mouseY;
-    newNode.draw(sourceNode.X, sourceNode.Y, mouseX, mouseY);
-  } else {
-  }
+function draw() {
+  background(255);
+  drawEdges();
+  drawNodes();
 
   //Draw overlapping arrowhead
   //Should start from under a sourcenode and go over a possible targetnode
   //Or: Change alle Edges so that they start at the Border of the Node and not the Center
-  if (mode == accessMode.addEdge2) {
-  }
 }
 
 function drawArrow(AX, AY, BX, BY) {
@@ -123,57 +244,10 @@ var targetNode = new GraphNode(-50, -50, "A");
 
 var selectedEdge;
 
-var cost = 1;
-
 function mouseClicked() {
-  if (mode == accessMode.addNode) {
-    if (!newNode.closeToAny()) {
-      nodeArray.push(newNode);
-      mode = accessMode.view;
-    } else {
-      mode = accessMode.view;
-    }
-  } else if (mode == accessMode.addEdge1) {
-    sourceNode = findNode();
-    if (sourceNode) {
-      mode = accessMode.addEdge2;
-    } else {
-      mode = accessMode.view;
-    }
-  } else if (mode == accessMode.addEdge2) {
-    targetNode = findNode();
-
-    if (targetNode && targetNode != sourceNode) {
-      //Testing for duplicate edge
-      let duplicateEdge = edgeArray.filter((edge, index, edgeArray) => {
-        return edge.sourceNode == sourceNode && edge.targetNode == targetNode;
-      });
-      if (duplicateEdge.length < 1) {
-        edgeArray.push(new GraphEdge(sourceNode, targetNode, 1));
-      }
-    }
-    mode = accessMode.view;
-  } else if (mode == accessMode.view) {
-    if ((selectedEdge = findEdge())) {
-      selectedEdge.active = true;
-      mode = accessMode.editEdge;
-    }
-  } else if (mode == accessMode.editEdge) {
-    selectedEdge.active = false;
-    if ((selectedEdge = findEdge())) {
-      selectedEdge.active = true;
-      mode = accessMode.editEdge;
-    } else {
-      mode = accessMode.view;
-    }
-  } else if (mode == accessMode.editEdge2) {
-    selectedEdge.active = false;
-    if ((selectedEdge = findEdge())) {
-      selectedEdge.active = true;
-      mode = accessMode.editEdge2;
-    } else {
-      mode = accessMode.view;
-    }
+  if ((selectedEdge = findEdge())) {
+    selectedEdge.active = true;
+    changeOperationMode(accessMode.editEdge);
   }
 }
 
@@ -200,25 +274,10 @@ function findEdge() {
 //TODO Keypressed function should be structured after the modes, not the keys
 function keyPressed() {
   if (key == "a") {
-    mode = accessMode.addNode;
+    changeOperationMode(accessMode.addNode);
     newNode = new GraphNode(mouseX, mouseY, nextID());
   } else if (key == "e") {
-    mode = accessMode.addEdge1;
-  } else if (mode == accessMode.editEdge) {
-    if (keyCode == DELETE) {
-      let index = edgeArray.indexOf(selectedEdge);
-      if (index !== -1) {
-        edgeArray.splice(index, 1);
-      }
-      mode = accessMode.view;
-    } else if (!isNaN(key)) {
-      selectedEdge.cost = key;
-      mode = accessMode.editEdge2;
-    }
-  } else if (mode == accessMode.editEdge2) {
-    if (!isNaN(key)) {
-      selectedEdge.cost = selectedEdge.cost + key;
-    }
+    changeOperationMode(accessMode.addEdge1);
   }
 }
 
