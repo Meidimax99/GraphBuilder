@@ -43,6 +43,16 @@ function changeOperationMode(newMode) {
           changeOperationMode(accessMode.addEdge1);
         }
       };
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("A - Add Node", canvasWidth - 170, canvasHeight - 130);
+        text("E - Add Edge", canvasWidth - 170, canvasHeight - 100);
+        text("Click - Select", canvasWidth - 170, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
     case accessMode.addNode:
       draw = function () {
@@ -61,6 +71,14 @@ function changeOperationMode(newMode) {
         }
       };
       keyPressed = function () {};
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Click - Place Node", canvasWidth - 220, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
     case accessMode.addEdge1:
       draw = function () {
@@ -76,6 +94,14 @@ function changeOperationMode(newMode) {
         }
       };
       keyPressed = function () {};
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Click - Select SourceNode", canvasWidth - 250, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
     case accessMode.addEdge2:
       draw = function () {
@@ -100,6 +126,14 @@ function changeOperationMode(newMode) {
         changeOperationMode(accessMode.view);
       };
       keyPressed = function () {};
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Click - Select TargetNode", canvasWidth - 250, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
     case accessMode.editEdge:
       draw = function () {
@@ -127,6 +161,15 @@ function changeOperationMode(newMode) {
           changeOperationMode(accessMode.editEdge2);
         }
       };
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Del - Delete Edge", canvasWidth - 170, canvasHeight - 100);
+        text("Num - Set Cost", canvasWidth - 170, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
     case accessMode.editEdge2:
       draw = function () {
@@ -151,6 +194,14 @@ function changeOperationMode(newMode) {
         if (!isNaN(key)) {
           selectedEdge.cost = selectedEdge.cost + key;
         }
+      };
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Num - Set Cost", canvasWidth - 170, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
       };
       break;
       case accessMode.editNode1:
@@ -186,6 +237,15 @@ function changeOperationMode(newMode) {
           changeOperationMode(accessMode.view);
         }
       };
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Any - Set Name", canvasWidth - 170, canvasHeight - 70);
+        text("Del - Delete Node", canvasWidth - 170, canvasHeight - 100);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
+      };
       break;
       case accessMode.editNode2:
       draw = function () {
@@ -197,6 +257,14 @@ function changeOperationMode(newMode) {
       };
       keyPressed = function () {
         
+      };
+      drawTooltip = function () {
+        textSize(20);
+        textAlign(LEFT);
+        fill(100, 100, 100);
+        text("Any - Set Name", canvasWidth - 170, canvasHeight - 70);
+        textSize(fontsize);
+        textAlign(CENTER, CENTER);
       };
       break;
   }
@@ -255,8 +323,20 @@ function setup() {
 var newNode = new GraphNode(-50, -50, "A");
 
 function drawScene() {
+  drawTooltip();
   drawEdges();
   drawNodes();
+}
+
+function drawTooltip() {
+  textSize(20);
+  textAlign(LEFT);
+  fill(100, 100, 100);
+  text("A - Add Node", canvasWidth - 170, canvasHeight - 130);
+  text("E - Add Edge", canvasWidth - 170, canvasHeight - 100);
+  text("Click - Select", canvasWidth - 170, canvasHeight - 70);
+  textSize(fontsize);
+  textAlign(CENTER, CENTER);
 }
 
 function draw() {
@@ -281,6 +361,7 @@ function drawArrow(AX, AY, BX, BY) {
 
   //reset transformations
   resetMatrix();
+  noStroke();
 }
 
 //Counter that keeps track of the next number to convert to a char
