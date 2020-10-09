@@ -17,7 +17,8 @@ const accessMode = {
 
 //Initial accessMode
 var mode = accessMode.view;
-
+//temp variable for nodename
+var buffer;
 function changeOperationMode(newMode) {
   switch (newMode) {
     case accessMode.view:
@@ -42,6 +43,9 @@ function changeOperationMode(newMode) {
         } else if (key == "e") {
           changeOperationMode(accessMode.addEdge1);
         }
+      };
+      keyTyped = function () {
+        
       };
       drawTooltip = function () {
         textSize(20);
@@ -70,6 +74,9 @@ function changeOperationMode(newMode) {
           changeOperationMode(accessMode.view);
         }
       };
+      keyTyped = function () {
+        
+      };
       keyPressed = function () {};
       drawTooltip = function () {
         textSize(20);
@@ -92,6 +99,9 @@ function changeOperationMode(newMode) {
         } else {
           changeOperationMode(accessMode.view);
         }
+      };
+      keyTyped = function () {
+        
       };
       keyPressed = function () {};
       drawTooltip = function () {
@@ -124,6 +134,9 @@ function changeOperationMode(newMode) {
           }
         }
         changeOperationMode(accessMode.view);
+      };
+      keyTyped = function () {
+        
       };
       keyPressed = function () {};
       drawTooltip = function () {
@@ -161,6 +174,9 @@ function changeOperationMode(newMode) {
           changeOperationMode(accessMode.editEdge2);
         }
       };
+      keyTyped = function () {
+        
+      };
       drawTooltip = function () {
         textSize(20);
         textAlign(LEFT);
@@ -195,6 +211,9 @@ function changeOperationMode(newMode) {
           selectedEdge.cost = selectedEdge.cost + key;
         }
       };
+      keyTyped = function () {
+        
+      };
       drawTooltip = function () {
         textSize(20);
         textAlign(LEFT);
@@ -205,13 +224,19 @@ function changeOperationMode(newMode) {
       };
       break;
       case accessMode.editNode1:
+      buffer = selectedNode.id;
       draw = function () {
         background(255);
         drawScene();
       };
       mouseClicked = function () {
         selectedNode.active = false;
-        if ((selectedNode = findNode())) {
+        let temp = selectedNode;
+        if ((selectedNode = findNode())== temp) {
+          selectedNode.active = true;
+          selectedNode.id = " ";
+          changeOperationMode(accessMode.editNode2);
+        } else if ((selectedNode = findNode())) {
           selectedNode.active = true;
           //changeOperationMode(accessMode.editNode1);
         } else {
@@ -230,19 +255,21 @@ function changeOperationMode(newMode) {
           });
           
           changeOperationMode(accessMode.view);
-        } else {
-          selectedNode.id = key;
-          selectedNode.active = false;
-          //Change to view and not to editNode2 -> only one char for a nodeid
-          changeOperationMode(accessMode.view);
+        } else if (keyCode == ENTER)  {
+          selectedNode.id = " ";
+          changeOperationMode(accessMode.editNode2);
         }
+      };
+      keyTyped = function () {
+        
       };
       drawTooltip = function () {
         textSize(20);
         textAlign(LEFT);
         fill(100, 100, 100);
-        text("Any - Set Name", canvasWidth - 170, canvasHeight - 70);
-        text("Del - Delete Node", canvasWidth - 170, canvasHeight - 100);
+        text("Any - Set Name", canvasWidth - 200, canvasHeight - 70);
+        text("Del - Delete Node", canvasWidth - 200, canvasHeight - 100);
+        text("Enter - Change Name", canvasWidth - 200, canvasHeight - 130);
         textSize(fontsize);
         textAlign(CENTER, CENTER);
       };
@@ -253,16 +280,32 @@ function changeOperationMode(newMode) {
         drawScene();
       };
       mouseClicked = function () {
-        
+        selectedNode.active = false;
+        selectedNode.id = selectedNode.id.trim();
+        if(selectedNode.id.length == 0) {
+          selectedNode.id = buffer;
+        }
+        changeOperationMode(accessMode.view);
       };
       keyPressed = function () {
-        
+        if (keyCode == ENTER)  {
+          selectedNode.active = false;
+          selectedNode.id = selectedNode.id.trim();
+          if(selectedNode.id.length <1) {
+            selectedNode.id = buffer;
+          }
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyTyped = function () {
+        selectedNode.id = selectedNode.id + key;
       };
       drawTooltip = function () {
         textSize(20);
         textAlign(LEFT);
         fill(100, 100, 100);
         text("Any - Set Name", canvasWidth - 170, canvasHeight - 70);
+        text("Click/Enter - Done", canvasWidth - 170, canvasHeight - 100);
         textSize(fontsize);
         textAlign(CENTER, CENTER);
       };
