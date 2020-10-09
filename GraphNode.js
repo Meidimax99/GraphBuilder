@@ -12,6 +12,7 @@ class GraphNode {
     this.X = X;
     this.Y = Y;
     this.id = id;
+    this.active = false;
   }
 
 
@@ -71,7 +72,7 @@ class GraphNode {
 
       fill(textColor.warning);
       text(this.id, this.X, this.Y - 6);
-    } else if (this.contains(mouseX, mouseY)) {
+    } else if (this.contains(mouseX, mouseY) || this.active) {
       fill(fillColor.activated);
       ellipse(this.X, this.Y, r);
 

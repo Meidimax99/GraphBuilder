@@ -11,6 +11,8 @@ const accessMode = {
   addEdge2: 4,
   editEdge: 5,
   editEdge2: 6,
+  editNode1: 7,
+  editNode2: 8
 };
 
 //Initial accessMode
@@ -24,7 +26,11 @@ function changeOperationMode(newMode) {
         drawScene();
       };
       mouseClicked = function () {
-        if ((selectedEdge = findEdge())) {
+        if(selectedNode = findNode()) {
+          selectedNode.active = true;
+          changeOperationMode(accessMode.editNode1);
+        }
+        else if ((selectedEdge = findEdge())) {
           selectedEdge.active = true;
           changeOperationMode(accessMode.editEdge);
         }
@@ -132,7 +138,7 @@ function changeOperationMode(newMode) {
         let newSelEdge = findEdge();
         if (newSelEdge && newSelEdge == selectedEdge) {
           selectedEdge.active = true;
-          changeOperationMode(accessMode.editEdge2);
+          //changeOperationMode(accessMode.editEdge2);
         } else if (newSelEdge) {
           selectedEdge = newSelEdge;
           selectedEdge.active = true;
@@ -145,6 +151,52 @@ function changeOperationMode(newMode) {
         if (!isNaN(key)) {
           selectedEdge.cost = selectedEdge.cost + key;
         }
+      };
+      break;
+      case accessMode.editNode1:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        selectedNode.active = false;
+        if ((selectedNode = findNode())) {
+          selectedNode.active = true;
+          //changeOperationMode(accessMode.editNode1);
+        } else {
+          changeOperationMode(accessMode.view);
+        }
+      };
+      keyPressed = function () {
+        if (keyCode == DELETE) {
+          let index = nodeArray.indexOf(selectedNode);
+          if (index !== -1) {
+            nodeArray.splice(index, 1);
+          }
+          //Delete connected Edges
+          edgeArray = edgeArray.filter((edge, index, edgeArray) => {
+            return edge.sourceNode !== selectedNode && edge.targetNode !== selectedNode;
+          });
+          
+          changeOperationMode(accessMode.view);
+        } else {
+          selectedNode.id = key;
+          selectedNode.active = false;
+          //Change to view and not to editNode2 -> only one char for a nodeid
+          changeOperationMode(accessMode.view);
+        }
+      };
+      break;
+      case accessMode.editNode2:
+      draw = function () {
+        background(255);
+        drawScene();
+      };
+      mouseClicked = function () {
+        
+      };
+      keyPressed = function () {
+        
       };
       break;
   }
@@ -256,6 +308,7 @@ var sourceNode = new GraphNode(-50, -50, "A");
 var targetNode = new GraphNode(-50, -50, "A");
 
 var selectedEdge;
+var selectedNode;
 
 function mouseClicked() {
   if ((selectedEdge = findEdge())) {
@@ -297,10 +350,7 @@ function drawNodes() {
 
 function findParallelEdge(inputedge) {
   return edgeArray.filter((edge, index, edgeArray) => {
-    return (
-      edge.sourceNode == inputedge.targetNode &&
-      edge.targetNode == inputedge.sourceNode
-    );
+    return edge.sourceNode == inputedge.targetNode && edge.targetNode == inputedge.sourceNode;
   });
 }
 
