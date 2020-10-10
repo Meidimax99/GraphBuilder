@@ -267,9 +267,8 @@ function changeOperationMode(newMode) {
         textSize(20);
         textAlign(LEFT);
         fill(100, 100, 100);
-        text("Any - Set Name", canvasWidth - 200, canvasHeight - 70);
-        text("Del - Delete Node", canvasWidth - 200, canvasHeight - 100);
-        text("Enter - Change Name", canvasWidth - 200, canvasHeight - 130);
+        text("Del - Delete Node", canvasWidth - 200, canvasHeight - 70);
+        text("Enter - Change Name", canvasWidth - 200, canvasHeight - 100);
         textSize(fontsize);
         textAlign(CENTER, CENTER);
       };
@@ -295,6 +294,8 @@ function changeOperationMode(newMode) {
             selectedNode.id = buffer;
           }
           changeOperationMode(accessMode.view);
+        } else if (keyCode == BACKSPACE) {
+          selectedNode.id = selectedNode.id.substring(0, selectedNode.id.length -1);
         }
       };
       keyTyped = function () {
@@ -306,6 +307,7 @@ function changeOperationMode(newMode) {
         fill(100, 100, 100);
         text("Any - Set Name", canvasWidth - 170, canvasHeight - 70);
         text("Click/Enter - Done", canvasWidth - 170, canvasHeight - 100);
+        text("Backspace - Backspace", canvasWidth - 170, canvasHeight - 130);
         textSize(fontsize);
         textAlign(CENTER, CENTER);
       };

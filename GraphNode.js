@@ -64,27 +64,43 @@ class GraphNode {
 
     noStroke();
 
+    //Draw Cost on the top right of the Node
     this.drawcost();
-    textSize(fontsize);
+
+    //Ellipse
+    //Change fill color based on Node status
     if (this.closeToAny()) {
       fill(fillColor.warning);
-      ellipse(this.X, this.Y, r);
-
-      fill(textColor.warning);
-      text(this.id, this.X, this.Y - 6);
     } else if (this.contains(mouseX, mouseY) || this.active) {
       fill(fillColor.activated);
-      ellipse(this.X, this.Y, r);
-
-      fill(textColor.activated);
-      text(this.id, this.X, this.Y - 6);
     } else {
       fill(fillColor.idle);
-      ellipse(this.X, this.Y, r);
-
-      fill(textColor.idle);
-      text(this.id, this.X, this.Y - 6);
     }
+    ellipse(this.X, this.Y, r);
+
+    //Text
+
+    //Change Text Color based on Node status
+    if (this.closeToAny()) {
+      fill(textColor.warning);
+    } else if (this.contains(mouseX, mouseY) || this.active) {
+      fill(textColor.activated);
+    } else {
+      fill(textColor.idle);
+    }
+    //Change Text size based on text length
+    if(this.contains(mouseX, mouseY) || this.active) {
+      textSize(30);
+      text(this.id, this.X, this.Y - 6);
+    } else if(this.id.length <= 6) {
+      textSize(fontsize - 2 * (this.id.length + 1));
+      text(this.id, this.X, this.Y - 6);
+    } else {
+      text(this.id.substring(0, 3) + "...", this.X, this.Y - 6);
+    }
+    
+
+    
 
     //Needs extra coloring modes for being marked when going through the algorithm, to mark them as already
     //checked -> Maybe do that with the Strokes
