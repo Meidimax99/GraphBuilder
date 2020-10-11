@@ -4,6 +4,7 @@ class GraphEdge {
     this.targetNode = targetNode;
     this.cost = cost;
     this.active = false;
+    //Marked edges are highlighted to show that they have already been worked on by the algorithm
     this.marked = false;
     this.middle = GraphEdge.middleOfLine(
       this.sourceNode.X,
@@ -13,11 +14,25 @@ class GraphEdge {
     );
   }
 
+  //Calculates the angle of a given vector relative to the horizontal x-Axis clockwise
   static calculateAngle(X, Y) {
     let magnitude = Math.sqrt(Math.pow(-X, 2) + Math.pow(-Y, 2));
     X = X / magnitude;
     Y = Y / magnitude;
     return -(Math.atan2(0, 1) - Math.atan2(Y, X));
+  }
+
+  //calculate the middle coordinate of a line defined by two points
+  static middleOfLine(AX, AY, BX, BY) {
+    return {
+      X: (AX + BX) / 2,
+      Y: (AY + BY) / 2,
+    };
+  }
+
+  //Calculates the Lenght of the Vector
+  static vectorLength(X, Y) {
+    return Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2));
   }
 
   //Check if given coordinates are on the Number of the edge
@@ -34,12 +49,18 @@ class GraphEdge {
     }
     return false;
   }
-  drawNormal() {}
-  static vectorLength(X, Y) {
-    return Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2));
+
+
+  //simple setter to set the cost of the edge
+  setCost(cost) {
+    if (cost > 0) {
+      this.cost = cost;
+    }
   }
 
+  //draws the edge, if doubled is true, the cost will be drawn closer to the targetnode
   draw(doubled) {
+    //Edge will be highlighted if either the mouse is on top of it or if it was activated
     if (this.contains(mouseX, mouseY) || this.active) {
       strokeWeight(8);
       stroke(fillColor.activated);
@@ -50,6 +71,7 @@ class GraphEdge {
         this.targetNode.Y
       );
     }
+    //draw the line
     stroke(0);
     strokeWeight(1);
     line(
@@ -83,6 +105,7 @@ class GraphEdge {
       this.targetNode.X,
       this.targetNode.Y
     );
+    //if doubled is true the Cost will be drawn closer to the targetnode
     if (doubled) {
       this.middle = {
         X: (this.middle.X - this.sourceNode.X) * 1.3 + this.sourceNode.X,
@@ -91,17 +114,5 @@ class GraphEdge {
     }
     text(this.cost, this.middle.X, this.middle.Y - 6);
   }
-
-  setCost(cost) {
-    if (cost > 0) {
-      this.cost = cost;
-    }
-  }
-
-  static middleOfLine(AX, AY, BX, BY) {
-    return {
-      X: (AX + BX) / 2,
-      Y: (AY + BY) / 2,
-    };
-  }
+  
 }

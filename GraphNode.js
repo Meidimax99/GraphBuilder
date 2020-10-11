@@ -16,10 +16,17 @@ class GraphNode {
     this.marked = false;
   }
 
+  mark() {
+    if(this.marked) {
+      this.marked = false
+    } else {
+      this.marked = true;
+    }
+  }
   setCost(cost) {
     this.cost = cost;
   }
-  //Is a given Point inside the Circle?
+  //check if given coordinates are inside the Node circle by calculating the distance between the Node center and the coordinates
   contains(posX, posY) {
     if (
       Math.sqrt(Math.pow(posX - this.X, 2) + Math.pow(posY - this.Y, 2)) <=
@@ -49,6 +56,7 @@ class GraphNode {
     return false;
   }
 
+  //uses the close function on every node of the nodeArray
   closeToAny() {
     let ret = false;
     for (var i = 0; i < nodeArray.length; i++) {
@@ -62,13 +70,10 @@ class GraphNode {
     return ret;
   }
 
+  //draw function for the Node
   draw() {
-    //Draw Node
-
+    
     noStroke();
-
-    //Draw Cost on the top right of the Node
-    this.drawcost();
 
     //Ellipse
     //Change fill color based on Node status
@@ -102,13 +107,14 @@ class GraphNode {
       text(this.id.substring(0, 3) + "...", this.X, this.Y - 6);
     }
     
-
-    
+    //Draw Cost on the top right of the Node
+    this.drawcost();
 
     //Needs extra coloring modes for being marked when going through the algorithm, to mark them as already
     //checked -> Maybe do that with the Strokes
   }
 
+  //Function to draw the cost of the node on the top right of the node
   drawcost() {
     textSize(20);
     fill(0);
