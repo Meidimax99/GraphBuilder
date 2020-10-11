@@ -4,7 +4,7 @@ class GraphEdge {
     this.targetNode = targetNode;
     this.cost = cost;
     this.active = false;
-    this.doubled = false;
+    this.marked = false;
     this.middle = GraphEdge.middleOfLine(
       this.sourceNode.X,
       this.sourceNode.Y,

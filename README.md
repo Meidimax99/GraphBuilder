@@ -1,17 +1,13 @@
 # Description
 
-This project will be part of an Interactive Graph Solver, which aims to show how some Graphalgorithms work. This Part will be the Interactive Graph Creator, Modifier and will also Visualize the Operations of the chosen Algorithm.
+This project will be part of an Interactive Graph Solver, which aims to show how some Graphalgorithms work. This Part will be the Interactive Graph Creator and Modifier and will also Visualize the Operations of the chosen Algorithm.
 
 # Current Functionality
 
-- Create new Nodes pressing 'a' and then clicking anywhere on the canvas
-- Create Edges Between existing nodes by pressing the 'e' Key and then selecting 2 Nodes
-- Change the cost of Edges by clicking on their cost and giving in a new number
-
-# Planned Functionality
-- Edges should easily be access from other programs, for example Angular components
-- stuff that comes up in the process of coding this
+- Creating, Deleting and Changing the Name of Nodes
+- Adding Edges to Nodes, Changing cost of Edges, Removing Edges
+- Tooltips at the bottom right displaying possible actions
 
 # Running the Project
 
-You will either need to download a copy of the p5.js library and include it in the index.html or you can include a hosted version of the library. You can learn more about downloading the p5.js Library at https://p5js.org/get-started/#download. After that you should be able to run it using a live server.
+You can simply download the project and run it with a simple live server.

@@ -13,9 +13,12 @@ class GraphNode {
     this.Y = Y;
     this.id = id;
     this.active = false;
+    this.marked = false;
   }
 
-
+  setCost(cost) {
+    this.cost = cost;
+  }
   //Is a given Point inside the Circle?
   contains(posX, posY) {
     if (
