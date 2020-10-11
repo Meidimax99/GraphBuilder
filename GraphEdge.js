@@ -80,6 +80,16 @@ class GraphEdge {
       this.targetNode.X,
       this.targetNode.Y
     );
+    if (this.marked) {
+      strokeWeight(3);
+      stroke(fillColor.marked);
+      line(
+        this.sourceNode.X,
+        this.sourceNode.Y,
+        this.targetNode.X,
+        this.targetNode.Y
+      );
+    }
     //Arrowhead
     //Calculate Vector between the vectors in functionparameterlist
     let angle = GraphEdge.calculateAngle(

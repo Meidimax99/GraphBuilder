@@ -79,6 +79,8 @@ class GraphNode {
     //Change fill color based on Node status
     if (this.closeToAny()) {
       fill(fillColor.warning);
+    } else if (this.marked) {
+      fill(fillColor.marked);
     } else if (this.contains(mouseX, mouseY) || this.active) {
       fill(fillColor.activated);
     } else {
@@ -91,7 +93,9 @@ class GraphNode {
     //Change Text Color based on Node status
     if (this.closeToAny()) {
       fill(textColor.warning);
-    } else if (this.contains(mouseX, mouseY) || this.active) {
+    } else if (this.marked) {
+      fill(textColor.marked);
+    }else if (this.contains(mouseX, mouseY) || this.active) {
       fill(textColor.activated);
     } else {
       fill(textColor.idle);

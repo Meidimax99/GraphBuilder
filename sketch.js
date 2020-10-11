@@ -371,8 +371,10 @@ function setup() {
   /*
   nodeArray.push(new GraphNode(100, 100, "A"));
   nodeArray.push(new GraphNode(300, 100, "B"));
+  nodeArray[1].marked = true;
   edgeArray.push(new GraphEdge(nodeArray[0], nodeArray[1], 1));
   edgeArray.push(new GraphEdge(nodeArray[1], nodeArray[0], 2));
+  edgeArray[1].marked = true;
   */
 }
 
@@ -410,6 +412,22 @@ function mouseClicked() {
     selectedEdge.active = true;
     changeOperationMode(accessMode.editEdge);
   }
+}
+
+function mouseWheel(event) {
+  if(event.delta > 0) {
+    if(r > 20) {
+      r-=2;
+    }
+  } else {
+    if(r < 150) {
+      r+=2;
+    }
+  }
+
+  console.clear();
+  console.log(r);
+  return false;
 }
 
 function drawTooltip() {
