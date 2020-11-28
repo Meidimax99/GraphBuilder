@@ -53,7 +53,7 @@ class GraphEdge {
 
   //simple setter to set the cost of the edge
   setCost(cost) {
-    if (cost > 0) {
+    if (cost >= 0) {
       this.cost = cost;
     }
   }
@@ -105,7 +105,7 @@ class GraphEdge {
     //reset transformations
     resetMatrix();
 
-    //Draw Edge Cost
+    //Draw Edge 
     noStroke();
     fill(0);
 
@@ -122,7 +122,9 @@ class GraphEdge {
         Y: (this.middle.Y - this.sourceNode.Y) * 1.3 + this.sourceNode.Y,
       };
     }
+    if(this.cost > 0 || this.active) {
     text(this.cost, this.middle.X, this.middle.Y - 6);
+    }
   }
   
 }
